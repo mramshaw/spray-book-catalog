@@ -1,6 +1,6 @@
 # Overview
 
-Sample Book Catalog REST(ful) web service in Scala with Spray framework.
+Sample Book Catalog REST(ful) web service in Scala with the Spray framework.
 
 ![Swagger Logo](/images/swagger-logo.png)
 
