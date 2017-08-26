@@ -2,6 +2,8 @@
 
 Sample Book Catalog REST(ful) web service in __Scala__ with the __Spray__ framework.
 
+![RESTful API](/images/Swagger-API.png)
+
 #### Spray
 
 [Spray](http://spray.io/) is a pattern-matching Routing plug-in for Scala's Akka framework.
@@ -18,9 +20,13 @@ It has its own DSL (Domain-Specific Language) for pattern-matching HTTP requests
 
 The REST API will be documented with Swagger. The very useful Swagger UI rivals Postman.
 
+![Swagger UI](/images/Swagger-UI.png)
+
+As far as I can tell Swagger introspects on code annotations, albeit in a very useful way.
+
 ## To Run
 
-Scala features the __sbt__ (Scala Build Tool), which seems to be yet another build/compile/test/run tool along the lines of __ant__ or __gradle__. And of course it is anything but simple. On the plus side, it does at least enforce a standard project directory structure.
+Scala features the __sbt__ (Simple Build Tool), which seems to be yet another build/compile/test/run tool along the lines of __ant__ or __maven__ or __gradle__. And of course it is anything but simple. On the plus side, it does at least enforce a standard project directory structure.
 
 	sbt
 	....
@@ -31,10 +37,9 @@ Scala features the __sbt__ (Scala Build Tool), which seems to be yet another bui
 	> run
 	....
 	> exit
+	$
 
 ## Swagger UI location
-
-Swagger seems very interesting. As far as I can tell it introspects on code annotations, albeit in a very useful way.
 
         https://localhost:9001/
 
@@ -60,6 +65,8 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 ## Supported REST(ful) endpoints
 
+#### Books
+
 * Search for a book on Google Books
 
         curl -vik -X GET https://localhost:9001/api/v1/search?query=scala
@@ -82,6 +89,8 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 * Remove book from the catalog by ISBN: `https://localhost:9001/api/v1/books/{isbn}`
 	
         curl -vik -X DELETE https://localhost:9001/api/v1/books/978-1935182757 -u admin:passw0rd
+
+#### Publishers
 
 * Get all publishers: `https://localhost:9001/api/v1/publishers`
 
@@ -120,7 +129,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
             -d '{"isbn": "978-1935182757", "author": "Thomas Alexandre", "title": "Aaa", "publishingDate": "2016-12-12"}'
             -u admin:passw0rd
 
-## Generating certificate
+## Generating a certificate
 
 * Generate a self-signed certificate
  
@@ -132,7 +141,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
         	-out certificate.crt 
         	-days 365 -nodes
 
-* Export it into PKCS#12 format (PKCS12 offers some improvements over JKS keystores. A PKCS12 keystore usually has a file extension of p12 or pfx.)
+* Export it into PKCS#12 format - PKCS12 offers some improvements over JKS keystores. A PKCS12 keystore usually has a file extension of p12 or pfx.
 
         openssl pkcs12 
           	-export 
@@ -157,9 +166,17 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
          	-srcstoretype PKCS12 
          	-alias spray-book-catalog
 
+## To Do
+
+[ ] Investigate replacing __openssl__ / __keytool__ certificate process with __cfssl__
+
 ## Credits
 
 This was the material for the course "Learning Scala Web Development", which can be found here:
+
+	https://www.lynda.com/Scala-tutorials/Learning-Scala-Web-Development/521233-2.html
+
+The course was orignally published here:
 
 	https://www.packtpub.com/web-development/learning-scala-web-development-video
 
