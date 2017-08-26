@@ -47,7 +47,7 @@ As the course material suggests, the Swagger UI is really great (and possibly th
 
 #### Firefox versus Chromium
 
-Neither of these browsers will accept self-signed certificates unprompted. To use __firefox__ it will be necessary to add a security exception (which will need to be removed later). As __chromium__ will allow an easy override to proceed to the website anyway, it is probably the browser to use. This only saves a click or two but as it is one less thing to remember about, a useful saving. Also, chromium will be very clear that the site is untrusted:
+Neither of these browsers will accept self-signed certificates unprompted. To use __Firefox__ it will be necessary to add a security exception (which will need to be removed later). As __Chromium__ will allow an easy override to proceed to the website anyway, it is probably the browser to use. This only saves a click or two but as it is one less thing to remember about, a useful saving. Also, Chromium will be very clear that the site is untrusted:
 
 ![Untrusted HTTPS](/images/Chromium_-_Untrusted_HTTPS.png)
 
@@ -149,35 +149,35 @@ This file does not even need to be created, as openssl will create it itself if 
 
 * Generate __.key__ and __.crt__ files:
  
-	openssl req -x509                   \
+	$ openssl req -x509                 \
 	            -sha256                 \
 	            -newkey rsa:2048        \
 	            -keyout certificate.key \
 	            -out    certificate.crt \
 	            -days 365 -nodes
 
-* Export our keys into a PKCS#12 keystore format:
+* Export our keys into a PKCS12 keystore:
 
-	openssl pkcs12 -export          \
+	$ openssl pkcs12 -export        \
 	   -in       certificate.crt    \
 	   -inkey    certificate.key    \
 	   -out      server.p12         \
 	   -name     spray-book-catalog \
 	   -password pass:passw0rd
 
-* Optionally, convert to PEM format:
+* Optionally, convert to PEM:
 
-	openssl x509 -inform PEM -in certificate.crt > certificate.pem
+	$ openssl x509 -inform PEM -in certificate.crt > certificate.pem
 
-* Import the certificate into JKS
+* Import the certificate into JKS:
 
-	keytool -importkeystore                       \
-	        -srcstorepass  passw0rd               \
-	        -destkeystore  spray-book-catalog.jks \
-	        -deststorepass passw0rd               \
-	        -srckeystore   server.p12             \
-	        -srcstoretype  PKCS12                 \
-	        -alias spray-book-catalog
+	$ keytool -importkeystore                       \
+	          -srcstorepass  passw0rd               \
+	          -destkeystore  spray-book-catalog.jks \
+	          -deststorepass passw0rd               \
+	          -srckeystore   server.p12             \
+	          -srcstoretype  PKCS12                 \
+	          -alias spray-book-catalog
 
 PKCS12 keystores offer some improvements over JKS keystores.
 
