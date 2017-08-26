@@ -20,8 +20,6 @@ It has its own DSL (Domain-Specific Language) for pattern-matching HTTP requests
 
 The REST API will be documented with Swagger. The very useful Swagger UI rivals Postman.
 
-![Swagger UI](/images/Swagger_UI.png)
-
 As far as I can tell Swagger introspects on code annotations, albeit in a very useful way.
 
 ## To Run
@@ -43,7 +41,17 @@ Scala features the __sbt__ (Simple Build Tool), which seems to be yet another bu
 
         https://localhost:9001/
 
+![Swagger UI](/images/Swagger_UI.png)
+
 As the course material suggests, the Swagger UI is really great (and possibly the best thing about Swagger).
+
+#### Firefox versus Chromium
+
+Neither of these browsers will accept self-signed certificates unprompted. To use __firefox__ it will be necessary to add a security exception (which will need to be removed later). As __chromium__ will allow an easy override to proceed to the website anyway, it is probably the browser to use. This only saves a click or two but as it is one less thing to remember about, a useful saving. Also, chromium will be very clear that the site is untrusted:
+
+![Untrusted HTTPS](/images/Chromium_-_Untrusted_HTTPS.png)
+
+For __expired__ certificates (surprisingly common these days) the procedure is much the same.
 
 ## Calling HTTPS endpoints
 
@@ -51,13 +59,13 @@ The HTTPS endpoints may be verified with either __cURL__ or __httpie__ (first an
 
 Although __httpie__ is less verbose and has a somewhat more sensible call sequence, my preference is for __curl__ simply because of the __-k__ option (which allows for the ignoring of expired security certificates - a bad practice to be sure, but acceptable for testing).
 
-* with certificate provided
+* with a certificate provided
  
         curl --cacert certificate.crt -vi -X GET https://localhost:9001/api/v1/books
 
         http --verify=certificate.crt https://localhost:9001/api/v1/books
 
-* without certificate provided
+* without a certificate provided
 
         curl -vik -X GET https://localhost:9001/api/v1/books
 
@@ -131,48 +139,62 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 ## Generating a certificate
 
-* Generate a self-signed certificate
+In order to use __TLS__ we will need to create an __x509__ security certificate, along with infrastructure to house it.
+
+By default, openssl will generate "unable to write 'random state'" messages if it is unable to write to the user's __.rand__ file (which is normally owned by __root__). There are a number of work-arounds but the simplest one is to tell openssl to use a different file (this avoids having to obtain __root__ permission):
+
+	$ export RANDFILE=./.randfile
+
+This file does not even need to be created, as openssl will create it itself if it cannot find it.
+
+* Generate __.key__ and __.crt__ files:
  
-        openssl req 
-           -x509 
-        	-sha256 
-        	-newkey rsa:2048 
-        	-keyout certificate.key 
-        	-out certificate.crt 
-        	-days 365 -nodes
+	openssl req -x509                   \
+	            -sha256                 \
+	            -newkey rsa:2048        \
+	            -keyout certificate.key \
+	            -out    certificate.crt \
+	            -days 365 -nodes
 
-* Export it into PKCS#12 format
+* Export our keys into a PKCS#12 keystore format:
 
-        openssl pkcs12 
-          	-export 
-         	-in certificate.crt 
-         	-inkey certificate.key  
-         	-out server.p12 
-         	-name spray-book-catalog 
-         	-password pass:passw0rd
+	openssl pkcs12 -export          \
+	   -in       certificate.crt    \
+	   -inkey    certificate.key    \
+	   -out      server.p12         \
+	   -name     spray-book-catalog \
+	   -password pass:passw0rd
 
-PKCS12 offers some improvements over JKS keystores.
+* Optionally, convert to PEM format:
 
-A PKCS12 keystore usually has a file extension of p12 or pfx.
-
-* Optionally, convert it into PEM format
-
-        openssl x509 -inform PEM -in certificate.crt > certificate.pem
+	openssl x509 -inform PEM -in certificate.crt > certificate.pem
 
 * Import the certificate into JKS
 
-        keytool 
-         	-importkeystore 
-         	-srcstorepass passw0rd 
-         	-destkeystore spray-book-catalog.jks 
-         	-deststorepass passw0rd 
-         	-srckeystore server.p12 
-         	-srcstoretype PKCS12 
-         	-alias spray-book-catalog
+	keytool -importkeystore                       \
+	        -srcstorepass  passw0rd               \
+	        -destkeystore  spray-book-catalog.jks \
+	        -deststorepass passw0rd               \
+	        -srckeystore   server.p12             \
+	        -srcstoretype  PKCS12                 \
+	        -alias spray-book-catalog
+
+PKCS12 keystores offer some improvements over JKS keystores.
+
+A PKCS12 keystore usually has a file extension of p12 or pfx.
+
+If desired, the temporary random file may be deleted:
+
+	$ rm ./.randfile
+
+Of course, leaving this file in the directory may be a good reminder for the next time.
 
 ## To Do
 
-[ ] Investigate replacing __openssl__ / __keytool__ certificate process with __cfssl__
+- [x] Investigate using self-signed certificates with __Firefox__ and __Chromium__
+- [ ] Investigate whether both __PKCS12__ and __JKS__ keystores are really needed
+- [ ] Investigate replacing __openssl__ / __keytool__ certificate process with __cfssl__
+- [ ] Investigate the latest crypto protocols with a view towards certificate generation
 
 ## Credits
 
@@ -184,7 +206,7 @@ The course was orignally published here:
 
 	https://www.packtpub.com/web-development/learning-scala-web-development-video
 
-Although the course is only slightly more than a year old, the material has aged badly. For instance the [Spray framework](http://spray.io/) is now apparently deprecated and has been replaced by [Akka HTTP](http://doc.akka.io/docs/akka-http/current/scala/http/). Happily there is a migration guide:
+Although the course is only slightly more than a year old, the material has aged. For instance the [Spray framework](http://spray.io/) is now apparently deprecated and has been replaced by [Akka HTTP](http://doc.akka.io/docs/akka-http/current/scala/http/). Happily there is a migration guide:
 
 	http://doc.akka.io/docs/akka-http/current/scala/http/migration-guide/migration-from-spray.html
 
