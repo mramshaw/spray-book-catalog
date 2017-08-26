@@ -1,12 +1,26 @@
 # Overview
 
-Sample Book Catalog REST(ful) web service in Scala with the Spray framework.
+Sample Book Catalog REST(ful) web service in __Scala__ with the __Spray__ framework.
+
+#### Spray
+
+[Spray](http://spray.io/) is a pattern-matching Routing plug-in for Scala's Akka framework.
+
+It seems very similiar to Python's Flask framework, or Golang's GorillaMux, or even node.js handlers.
+
+It has its own DSL (Domain-Specific Language) for pattern-matching HTTP requests.
+
+#### Swagger
 
 ![Swagger Logo](/images/swagger-logo.png)
+
+[Swagger](https://swagger.io/) describes itself as the world's most popular API tooling.
 
 The REST API will be documented with Swagger. The very useful Swagger UI rivals Postman.
 
 ## To Run
+
+Scala features the __sbt__ (Scala Build Tool), which seems to be yet another build/compile/test/run tool along the lines of __ant__ or __gradle__. And of course it is anything but simple. On the plus side, it does at least enforce a standard project directory structure.
 
 	sbt
 	....
@@ -20,7 +34,11 @@ The REST API will be documented with Swagger. The very useful Swagger UI rivals 
 
 ## Swagger UI location
 
+Swagger seems very interesting. As far as I can tell it introspects on code annotations, albeit in a very useful way.
+
         https://localhost:9001/
+
+As the course material suggests, the Swagger UI is really great (and possibly the best thing about Swagger).
 
 ## Calling HTTPS endpoints
 
@@ -103,6 +121,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
             -u admin:passw0rd
 
 ## Generating certificate
+
 * Generate a self-signed certificate
  
         openssl req 
@@ -137,3 +156,15 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
          	-srckeystore server.p12 
          	-srcstoretype PKCS12 
          	-alias spray-book-catalog
+
+## Credits
+
+This was the material for the course "Learning Scala Web Development", which can be found here:
+
+	https://www.packtpub.com/web-development/learning-scala-web-development-video
+
+Although the course is only slightly more than a year old, the material has aged badly. For instance the [Spray framework](http://spray.io/) is now apparently deprecated and has been replaced by [Akka HTTP](http://doc.akka.io/docs/akka-http/current/scala/http/). Happily there is a migration guide:
+
+	http://doc.akka.io/docs/akka-http/current/scala/http/migration-guide/migration-from-spray.html
+
+The course itself was slightly frustrating - for instance, a good editor would have insisted on idiomatic English. The material itself referred in large part to this code and was more in line with an explanation of the code rather than an actual tutorial. The script was beautifully read by a professional reader, but obviously NOT a subject-matter expert - which made for a slightly jarring experience. Even so, I learned a few things and the editorial comments were interesting.
