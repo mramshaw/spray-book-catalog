@@ -2,7 +2,7 @@
 
 Sample Book Catalog REST(ful) web service in __Scala__ with the __Spray__ framework.
 
-![RESTful API](/images/Swagger-API.png)
+![RESTful API](/images/Swagger_API.png)
 
 #### Spray
 
@@ -20,7 +20,7 @@ It has its own DSL (Domain-Specific Language) for pattern-matching HTTP requests
 
 The REST API will be documented with Swagger. The very useful Swagger UI rivals Postman.
 
-![Swagger UI](/images/Swagger-UI.png)
+![Swagger UI](/images/Swagger_UI.png)
 
 As far as I can tell Swagger introspects on code annotations, albeit in a very useful way.
 
@@ -71,58 +71,58 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
         curl -vik -X GET https://localhost:9001/api/v1/search?query=scala
 
-* Get all books: `https://localhost:9001/api/v1/books`
+* Get all books:
 
         curl -vik -X GET https://localhost:9001/api/v1/books
 
-* Get book by ISBN: `https://localhost:9001/api/v1/books/{isbn}`
+* Get book by ISBN:
 
         curl -vik -X GET https://localhost:9001/api/v1/books/978-1935182757
 
-* Update book by ISBN: `https://localhost:9001/api/v1/books/{isbn}`
+* Update book by ISBN:
  
         curl -vik -X PUT https://localhost:9001/api/v1/books/978-1935182757 
         	 -H "Content-Type: application/json" 
         	 -d '{"author": "Thomas Alexandre", "title": "Scala for Java Developers", "publishingDate": "2016-12-12"}'
         	 -u admin:passw0rd
 
-* Remove book from the catalog by ISBN: `https://localhost:9001/api/v1/books/{isbn}`
+* Remove book from the catalog by ISBN:
 	
         curl -vik -X DELETE https://localhost:9001/api/v1/books/978-1935182757 -u admin:passw0rd
 
 #### Publishers
 
-* Get all publishers: `https://localhost:9001/api/v1/publishers`
+* Get all publishers:
 
         curl -vik -X GET https://localhost:9001/api/v1/publishers
 
-* Add new publisher to book catalog: `https://localhost:9001/api/v1/publishers`
+* Add new publisher to book catalog:
 
         curl -vik -X POST https://localhost:9001/api/v1/publishers
             -H "Content-Type: application/json"
             -d '{"name": "Leanpub"}'
             -u admin:passw0rd
 
-* Get publisher by publisher identifier: `https://localhost:9001/api/v1/publishers/{id}`
+* Get publisher by publisher identifier:
 
         curl -vik -X GET https://localhost:9001/api/v1/publishers/1
 
-* Update publisher by publisher identifier: `https://localhost:9001/api/v1/publishers/{id}`
+* Update publisher by publisher identifier:
 
         curl -vik -X PUT https://localhost:9001/api/v1/publishers/1
             -H "Content-Type: application/json"
             -d '{"name": "Leanpub"}'
             -u admin:passw0rd
 
-* Remove publisher by publisher identifier: `https://localhost:9001/api/v1/publishers/{id}`
+* Remove publisher by publisher identifier:
 
         curl -vik -X DELETE https://localhost:9001/api/v1/publishers/1 -u admin:passw0rd
 
-* Get all books published by the publisher: `https://localhost:9001/api/v1/publishers/{id}/books`
+* Get all books published by the publisher:
 
         curl -vik -X GET https://localhost:9001/api/v1/publishers/1/books
 
-* Add new book published by the publisher: `https://localhost:9001/api/v1/publishers/{id}/books`
+* Add new book published by the publisher:
 
         curl -vik -X POST https://localhost:9001/api/v1/publishers/2/books
             -H "Content-Type: application/json" 
@@ -141,7 +141,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
         	-out certificate.crt 
         	-days 365 -nodes
 
-* Export it into PKCS#12 format - PKCS12 offers some improvements over JKS keystores. A PKCS12 keystore usually has a file extension of p12 or pfx.
+* Export it into PKCS#12 format
 
         openssl pkcs12 
           	-export 
@@ -150,6 +150,10 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
          	-out server.p12 
          	-name spray-book-catalog 
          	-password pass:passw0rd
+
+PKCS12 offers some improvements over JKS keystores.
+
+A PKCS12 keystore usually has a file extension of p12 or pfx.
 
 * Optionally, convert it into PEM format
 
