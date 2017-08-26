@@ -4,6 +4,8 @@ Sample Book Catalog REST(ful) web service in __Scala__ with the __Spray__ framew
 
 ![RESTful API](/images/Swagger_API.png)
 
+API testing will be carried out with JUnit.
+
 #### Spray
 
 [Spray](http://spray.io/) is a pattern-matching Routing plug-in for Scala's Akka framework.
@@ -37,6 +39,12 @@ Scala features the __sbt__ (Simple Build Tool), which seems to be yet another bu
         > exit
         $
 
+Or simply:
+
+        $ sbt run
+
+As usual, __Ctrl-C__ to terminate.
+
 ## Swagger UI location
 
         https://localhost:9001/
@@ -47,7 +55,7 @@ As the course material suggests, the Swagger UI is really great (and possibly th
 
 #### Firefox versus Chromium
 
-Neither of these browsers will accept self-signed certificates unprompted. To use __Firefox__ it will be necessary to add a security exception (which will need to be removed later). As __Chromium__ will allow an easy override to proceed to the website anyway, it is probably the browser to use. This only saves a click or two but as it is one less thing to remember about, a useful saving. Also, Chromium will be very clear that the site is untrusted:
+Neither of these browsers will accept self-signed certificates unprompted. To use __Firefox__ it will be necessary to add a security exception (which should be removed later). As __Chromium__ will allow an easy override to proceed to the website anyway, it is probably the browser to use. This only saves a click or two but as it is one less thing to remember about, a useful saving. Also, Chromium will be very clear that the site is untrusted:
 
 ![Untrusted HTTPS](/images/Chromium_-_Untrusted_HTTPS.png)
 
@@ -55,19 +63,19 @@ For __expired__ certificates (surprisingly common these days) the procedure is m
 
 ## Calling HTTPS endpoints
 
-The HTTPS endpoints may be verified with either __cURL__ or __httpie__ (first and second options below).
+The HTTPS endpoints may also be verified with either __cURL__ or __httpie__ (first and second options below).
 
-Although __httpie__ is less verbose and has a somewhat more sensible call sequence, my preference is for __curl__ simply because of the __-k__ option (which allows for the ignoring of expired security certificates - a bad practice to be sure, but acceptable for testing).
+Although __httpie__ is less verbose and has a somewhat more sensible call sequence, my preference is for __curl__ simply because of the __-k__ option (which allows for the ignoring of expired or self-signed security certificates - a bad practice to be sure, but acceptable for testing).
 
 * with a certificate provided
  
-        curl --cacert certificate.crt -vi -X GET https://localhost:9001/api/v1/books
+        curl --cacert certificate.crt -vi https://localhost:9001/api/v1/books
 
         http --verify=certificate.crt https://localhost:9001/api/v1/books
 
 * without a certificate provided
 
-        curl -vik -X GET https://localhost:9001/api/v1/books
+        curl -vik https://localhost:9001/api/v1/books
 
         http --verify=no https://localhost:9001/api/v1/books        
 
@@ -75,17 +83,17 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 #### Books
 
-* Search for a book on Google Books
+* Search for a book on Google Books:
 
-        curl -vik -X GET https://localhost:9001/api/v1/search?query=scala
+        curl -vik https://localhost:9001/api/v1/search?query=scala
 
 * Get all books:
 
-        curl -vik -X GET https://localhost:9001/api/v1/books
+        curl -vik https://localhost:9001/api/v1/books
 
 * Get book by ISBN:
 
-        curl -vik -X GET https://localhost:9001/api/v1/books/978-1935182757
+        curl -vik https://localhost:9001/api/v1/books/978-1935182757
 
 * Update book by ISBN:
  
@@ -102,7 +110,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 * Get all publishers:
 
-        curl -vik -X GET https://localhost:9001/api/v1/publishers
+        curl -vik https://localhost:9001/api/v1/publishers
 
 * Add new publisher to book catalog:
 
@@ -113,7 +121,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 * Get publisher by publisher identifier:
 
-        curl -vik -X GET https://localhost:9001/api/v1/publishers/1
+        curl -vik https://localhost:9001/api/v1/publishers/1
 
 * Update publisher by publisher identifier:
 
@@ -128,7 +136,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 * Get all books published by the publisher:
 
-        curl -vik -X GET https://localhost:9001/api/v1/publishers/1/books
+        curl -vik https://localhost:9001/api/v1/publishers/1/books
 
 * Add new book published by the publisher:
 
@@ -196,6 +204,7 @@ Of course, leaving this file in the directory may be a good reminder for the nex
 - [ ] Investigate replacing __openssl__ / __keytool__ certificate process with __cfssl__
 - [ ] Investigate the latest crypto protocols with a view towards certificate generation
 - [ ] Investigate the failing tests and fix them
+- [ ] Investigate upgrading to HTTP2
 
 ## Credits
 
