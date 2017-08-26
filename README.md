@@ -26,16 +26,16 @@ As far as I can tell Swagger introspects on code annotations, albeit in a very u
 
 Scala features the __sbt__ (Simple Build Tool), which seems to be yet another build/compile/test/run tool along the lines of __ant__ or __maven__ or __gradle__. And of course it is anything but simple. On the plus side, it does at least enforce a standard project directory structure.
 
-	sbt
-	....
-	> compile
-	....
-	> test
-	....
-	> run
-	....
-	> exit
-	$
+        sbt
+        ....
+        > compile
+        ....
+        > test
+        ....
+        > run
+        ....
+        > exit
+        $
 
 ## Swagger UI location
 
@@ -90,12 +90,12 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 * Update book by ISBN:
  
         curl -vik -X PUT https://localhost:9001/api/v1/books/978-1935182757 
-        	 -H "Content-Type: application/json" 
-        	 -d '{"author": "Thomas Alexandre", "title": "Scala for Java Developers", "publishingDate": "2016-12-12"}'
-        	 -u admin:passw0rd
+             -H "Content-Type: application/json" 
+             -d '{"author": "Thomas Alexandre", "title": "Scala for Java Developers", "publishingDate": "2016-12-12"}'
+             -u admin:passw0rd
 
 * Remove book from the catalog by ISBN:
-	
+
         curl -vik -X DELETE https://localhost:9001/api/v1/books/978-1935182757 -u admin:passw0rd
 
 #### Publishers
@@ -107,9 +107,9 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 * Add new publisher to book catalog:
 
         curl -vik -X POST https://localhost:9001/api/v1/publishers
-            -H "Content-Type: application/json"
-            -d '{"name": "Leanpub"}'
-            -u admin:passw0rd
+             -H "Content-Type: application/json"
+             -d '{"name": "Leanpub"}'
+             -u admin:passw0rd
 
 * Get publisher by publisher identifier:
 
@@ -118,9 +118,9 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 * Update publisher by publisher identifier:
 
         curl -vik -X PUT https://localhost:9001/api/v1/publishers/1
-            -H "Content-Type: application/json"
-            -d '{"name": "Leanpub"}'
-            -u admin:passw0rd
+             -H "Content-Type: application/json"
+             -d '{"name": "Leanpub"}'
+             -u admin:passw0rd
 
 * Remove publisher by publisher identifier:
 
@@ -133,9 +133,9 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 * Add new book published by the publisher:
 
         curl -vik -X POST https://localhost:9001/api/v1/publishers/2/books
-            -H "Content-Type: application/json" 
-            -d '{"isbn": "978-1935182757", "author": "Thomas Alexandre", "title": "Aaa", "publishingDate": "2016-12-12"}'
-            -u admin:passw0rd
+             -H "Content-Type: application/json" 
+             -d '{"isbn": "978-1935182757", "author": "Thomas Alexandre", "title": "Aaa", "publishingDate": "2016-12-12"}'
+             -u admin:passw0rd
 
 ## Generating a certificate
 
@@ -143,41 +143,41 @@ In order to use __TLS__ we will need to create an __x509__ security certificate,
 
 By default, openssl will generate "unable to write 'random state'" messages if it is unable to write to the user's __.rand__ file (which is normally owned by __root__). There are a number of work-arounds but the simplest one is to tell openssl to use a different file (this avoids having to obtain __root__ permission):
 
-	$ export RANDFILE=./.randfile
+        $ export RANDFILE=./.randfile
 
 This file does not even need to be created, as openssl will create it itself if it cannot find it.
 
 * Generate __.key__ and __.crt__ files:
  
-	$ openssl req -x509                 \
-	            -sha256                 \
-	            -newkey rsa:2048        \
-	            -keyout certificate.key \
-	            -out    certificate.crt \
-	            -days 365 -nodes
+        $ openssl req -x509         \
+            -sha256                 \
+            -newkey rsa:2048        \
+            -keyout certificate.key \
+            -out    certificate.crt \
+            -days 365 -nodes
 
 * Export our keys into a PKCS12 keystore:
 
-	$ openssl pkcs12 -export        \
-	   -in       certificate.crt    \
-	   -inkey    certificate.key    \
-	   -out      server.p12         \
-	   -name     spray-book-catalog \
-	   -password pass:passw0rd
+        $ openssl pkcs12 -export        \
+           -in       certificate.crt    \
+           -inkey    certificate.key    \
+           -out      server.p12         \
+           -name     spray-book-catalog \
+           -password pass:passw0rd
 
 * Optionally, convert to PEM:
 
-	$ openssl x509 -inform PEM -in certificate.crt > certificate.pem
+        $ openssl x509 -inform PEM -in certificate.crt > certificate.pem
 
 * Import the certificate into JKS:
 
-	$ keytool -importkeystore                       \
-	          -srcstorepass  passw0rd               \
-	          -destkeystore  spray-book-catalog.jks \
-	          -deststorepass passw0rd               \
-	          -srckeystore   server.p12             \
-	          -srcstoretype  PKCS12                 \
-	          -alias spray-book-catalog
+        $ keytool -importkeystore                       \
+                  -srcstorepass  passw0rd               \
+                  -destkeystore  spray-book-catalog.jks \
+                  -deststorepass passw0rd               \
+                  -srckeystore   server.p12             \
+                  -srcstoretype  PKCS12                 \
+                  -alias spray-book-catalog
 
 PKCS12 keystores offer some improvements over JKS keystores.
 
@@ -185,7 +185,7 @@ A PKCS12 keystore usually has a file extension of p12 or pfx.
 
 If desired, the temporary random file may be deleted:
 
-	$ rm ./.randfile
+        $ rm ./.randfile
 
 Of course, leaving this file in the directory may be a good reminder for the next time.
 
@@ -195,19 +195,20 @@ Of course, leaving this file in the directory may be a good reminder for the nex
 - [ ] Investigate whether both __PKCS12__ and __JKS__ keystores are really needed
 - [ ] Investigate replacing __openssl__ / __keytool__ certificate process with __cfssl__
 - [ ] Investigate the latest crypto protocols with a view towards certificate generation
+- [ ] Investigate the failing tests and fix them
 
 ## Credits
 
 This was the material for the course "Learning Scala Web Development", which can be found here:
 
-	https://www.lynda.com/Scala-tutorials/Learning-Scala-Web-Development/521233-2.html
+        https://www.lynda.com/Scala-tutorials/Learning-Scala-Web-Development/521233-2.html
 
 The course was orignally published here:
 
-	https://www.packtpub.com/web-development/learning-scala-web-development-video
+        https://www.packtpub.com/web-development/learning-scala-web-development-video
 
 Although the course is only slightly more than a year old, the material has aged. For instance the [Spray framework](http://spray.io/) is now apparently deprecated and has been replaced by [Akka HTTP](http://doc.akka.io/docs/akka-http/current/scala/http/). Happily there is a migration guide:
 
-	http://doc.akka.io/docs/akka-http/current/scala/http/migration-guide/migration-from-spray.html
+        http://doc.akka.io/docs/akka-http/current/scala/http/migration-guide/migration-from-spray.html
 
 The course itself was slightly frustrating - for instance, a good editor would have insisted on idiomatic English. The material itself referred in large part to this code and was more in line with an explanation of the code rather than an actual tutorial. The script was beautifully read by a professional reader, but obviously NOT a subject-matter expert - which made for a slightly jarring experience. Even so, I learned a few things and the editorial comments were interesting.
