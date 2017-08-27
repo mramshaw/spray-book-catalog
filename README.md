@@ -65,7 +65,7 @@ For __expired__ certificates (surprisingly common these days) the procedure is m
 
 The HTTPS endpoints may also be verified with either __cURL__ or __httpie__ (first and second options below).
 
-Although __httpie__ is less verbose and has a somewhat more sensible call sequence, my preference is for __curl__ simply because of the __-k__ option (which allows for the ignoring of expired or self-signed security certificates - a bad practice to be sure, but acceptable for testing).
+Although [httpie](https://github.com/jakubroztocil/httpie) is less verbose and has a somewhat more sensible call sequence, my preference is for __curl__ simply because of the __-k__ option (which allows for the ignoring of expired or self-signed security certificates - a bad practice to be sure, but acceptable for testing).
 
 * with a certificate provided
  
@@ -149,7 +149,7 @@ Although __httpie__ is less verbose and has a somewhat more sensible call sequen
 
 In order to use __TLS__ we will need to create an __x509__ security certificate, along with infrastructure to house it.
 
-By default, openssl will generate "unable to write 'random state'" messages if it is unable to write to the user's __.rand__ file (which is normally owned by __root__). There are a number of work-arounds but the simplest one is to tell openssl to use a different file (this avoids having to obtain __root__ permission):
+By default, openssl will generate ```unable to write 'random state'``` messages if it is unable to write to the user's __.rand__ file (which is normally owned by __root__). There are a number of work-arounds but the simplest one is to tell openssl to use a different file (this avoids having to obtain __root__ permission):
 
         $ export RANDFILE=./.randfile
 
@@ -212,7 +212,7 @@ This was the material for the course "Learning Scala Web Development", which can
 
         https://www.lynda.com/Scala-tutorials/Learning-Scala-Web-Development/521233-2.html
 
-The course was orignally published here:
+The course was originally published here:
 
         https://www.packtpub.com/web-development/learning-scala-web-development-video
 
