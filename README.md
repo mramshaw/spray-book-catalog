@@ -26,7 +26,7 @@ As far as I can tell Swagger introspects on code annotations, albeit in a very u
 
 ## To Run
 
-Scala features the __sbt__ (Simple Build Tool), which seems to be yet another build/compile/test/run tool along the lines of __ant__ or __maven__ or __gradle__. And of course it is anything but simple. On the plus side, it does at least enforce a standard project directory structure.
+Scala features the __sbt__ (Simple Build Tool). At first blush this seems to be yet another build/compile/test/run tool along the lines of __make__ or __ant__ or __maven__ or __gradle__. But really it is much more along the lines of __create-react-app__ in that it doesn't only download dependencies, it also creates a project directory. And of course it is anything but simple. On the plus side, it does at least enforce a standard project directory structure.
 
         sbt
         ....
