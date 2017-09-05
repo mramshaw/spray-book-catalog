@@ -201,7 +201,7 @@ Of course, leaving this file in the directory may be a good reminder for the nex
 
 - [x] Investigate using self-signed certificates with __Firefox__ and __Chromium__
 - [ ] Investigate whether both __PKCS12__ and __JKS__ keystores are really needed
-- [ ] Investigate replacing __openssl__ / __keytool__ certificate process with __cfssl__
+- [ ] Investigate replacing __openssl__ / __keytool__ certificate process with [cfssl](https://github.com/mramshaw/cfssl)
 - [ ] Investigate the latest crypto protocols with a view towards certificate generation
 - [ ] Investigate the failing tests and fix them
 - [ ] Investigate upgrading to HTTP2
