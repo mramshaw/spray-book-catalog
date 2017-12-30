@@ -187,7 +187,7 @@ This file does not even need to be created, as openssl will create it itself if 
                   -srcstoretype  PKCS12                 \
                   -alias spray-book-catalog
 
-PKCS12 keystores offer some improvements over JKS keystores.
+PKCS12 keystores offer some improvements over JKS keystores (with [Java 9](http://openjdk.java.net/jeps/229) java keystores use PKCS12 rather than JKS however there may be interoperability problems due to Java's multi-keystore implementation. So it is probably a good idea to retain the original server.p12 keystore in case of compatibility issues).
 
 A PKCS12 keystore usually has a file extension of p12 or pfx.
 
